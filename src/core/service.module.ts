@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ServiceController } from './controllers/service.controller';
-import { PrismaService } from '../prisma/prisma.service';
-import { PrismaModule } from '../prisma/prisma.module';
+import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaModule } from '../../prisma/prisma.module';
 import { ServiceService } from '../services/service.service';
 import { GetAllServiceUseCase } from '../useCase/service/GetAllService.usecase';
 import { GetOneServiceUseCase } from '../useCase/service/GetOneService.usecase';
