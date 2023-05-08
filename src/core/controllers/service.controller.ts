@@ -10,13 +10,13 @@ import {
 } from '@nestjs/common';
 import { HttpResponse } from '../../helpers/contracts';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ServiceResponseDTO } from '../adapters/service.response.dto';
-import { CreateServiceUseCase } from '@/useCase/service/createService.usecase';
-import { ServiceRequestDTO } from '../adapters/service.request.dto';
-import { GetAllServiceUseCase } from '@/useCase/service/GetAllService.usecase';
-import { GetOneServiceUseCase } from '@/useCase/service/GetOneService.usecase';
-import { UpdateServiceUseCase } from '@/useCase/service/updateService.usecase';
-import { DeleteServiceUseCase } from '@/useCase/service/deleteService.usecase';
+import { ServiceResponseDTO } from '../dtos/service.response.dto';
+import { CreateServiceUseCase } from '../../useCase/service/createService.usecase';
+import { ServiceRequestDTO } from '../dtos/service.request.dto';
+import { GetAllServiceUseCase } from '../../useCase/service/GetAllService.usecase';
+import { GetOneServiceUseCase } from '../../useCase/service/GetOneService.usecase';
+import { UpdateServiceUseCase } from '../../useCase/service/updateService.usecase';
+import { DeleteServiceUseCase } from '../../useCase/service/deleteService.usecase';
 
 @ApiTags('service')
 @Controller('service')
@@ -35,7 +35,7 @@ export class ServiceController {
   @ApiResponse({
     status: 200,
     description: 'Success Response',
-    type: ServiceResponseDTO,
+    type: ServiceResponseDTO
   })
   @ApiResponse({
     status: 500,
@@ -47,7 +47,7 @@ export class ServiceController {
     @Body() body: ServiceRequestDTO,
   ): Promise<HttpResponse> {
     const result = await this.createServiceUseCase.handle(body);
-    return response.status(result.status).json(result);
+    return response.status(result.status).json(result.data);
   }
 
   @ApiOperation({
@@ -56,16 +56,17 @@ export class ServiceController {
   @ApiResponse({
     status: 200,
     description: 'Success Response',
+    isArray: true,
     type: ServiceResponseDTO,
   })
   @ApiResponse({
     status: 500,
     description: 'Error on server.',
   })
-  @Get()
+  @Get('all')
   async getAll(@Res() response): Promise<HttpResponse> {
     const result = await this.getAllServiceUseCase.handle();
-    return response.status(result.status).json(result);
+    return response.status(result.status).json(result.data);
   }
 
   @ApiOperation({
@@ -80,7 +81,7 @@ export class ServiceController {
     status: 500,
     description: 'Error on server.',
   })
-  @Get()
+  @Get('one')
   async getOne(
     @Query('id') id: string,
     @Res() response,

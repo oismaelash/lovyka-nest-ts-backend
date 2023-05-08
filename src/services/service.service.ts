@@ -1,58 +1,61 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { ServiceRequestDTO } from '@/core/adapters/service.request.dto';
-import { ServiceResponseDTO } from '@/core/adapters/service.response.dto';
+import { ServiceRequestDTO } from '../core/dtos/service.request.dto';
+import { Service } from '@prisma/client';
 
 @Injectable()
 export class ServiceService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prismaService: PrismaService) { }
 
   async create(
     serviceRequestDTO: ServiceRequestDTO,
-  ): Promise<ServiceResponseDTO> {
-    return this.prisma.service.create({
-      data: serviceRequestDTO,
-    });
+  ): Promise<Service> {
+    const result = await this.prismaService.service.create({
+      data: {
+        name: serviceRequestDTO.name,
+        description: serviceRequestDTO.description,
+        price: serviceRequestDTO.price
+      }
+    })
+
+    return result
   }
 
-  async getAll(): Promise<ServiceResponseDTO[]> {
-    return this.prisma.service.findMany({
-      // include: {
-      //   comments: true,
-      // },
-    });
+  async getAll(): Promise<Service[]> {
+    return this.prismaService.service.findMany()
   }
 
-  async getOne(id: string): Promise<ServiceResponseDTO> {
-    return this.prisma.service.findUnique({
-      where: { id },
-      include: {
-        comments: true,
+  async getOne(id: string): Promise<Service> {
+    return this.prismaService.service.findFirst({
+      where: {
+        id: id
       },
-    });
+      include: {
+        comments: true
+      }
+    })
   }
 
   async update(
     id: string,
     serviceRequestDTO: ServiceRequestDTO,
-  ): Promise<ServiceResponseDTO> {
-    const service = await this.prisma.service.findUnique({
-      where: { id },
-    });
-
-    return this.prisma.service.update({
+  ): Promise<Service> {
+    return this.prismaService.service.update({
       where: { id },
       data: {
-        name: serviceRequestDTO.name ?? service.name,
-        description: serviceRequestDTO.description ?? service.description,
-        price: serviceRequestDTO.price ?? service.price,
-      },
+        name: serviceRequestDTO.name,
+        description: serviceRequestDTO.description,
+        price: serviceRequestDTO.price,
+        update_at: new Date()
+      }
     });
   }
 
-  async delete(id: string): Promise<ServiceResponseDTO> {
-    return this.prisma.service.delete({
-      where: { id },
-    });
+  async delete(id: string): Promise<Service> {
+    return this.prismaService.service.delete({
+      where: {
+        id: id
+      }
+    })
   }
 }

@@ -3,19 +3,18 @@ import {
   HttpResponse,
   successResponse,
 } from '../../helpers/contracts';
-import { UseCase } from '@/helpers/useCase';
+import { UseCase } from '../../helpers/useCase';
 import { Injectable } from '@nestjs/common';
-import { ServiceAxios } from '../../services/service';
-import { ServiceRequestDTO } from '@/core/adapters/service.request.dto';
+import { LikeService } from '../../services/like.service';
 
 @Injectable()
 export class AddLikeUseCase implements UseCase {
-  constructor(private readonly service: ServiceAxios) {}
+  constructor(private readonly likeService: LikeService) {}
 
-  async handle(service: ServiceRequestDTO): Promise<HttpResponse> {
+  async handle(serviceId: string): Promise<HttpResponse> {
     try {
-      const result = await this.service.get(config);
-      return successResponse(result.data);
+      const result = await this.likeService.addLike(serviceId)
+      return successResponse(result);
     } catch (error) {
       return errorResponse(error);
     }

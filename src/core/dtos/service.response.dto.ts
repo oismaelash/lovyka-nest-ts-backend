@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsNotEmpty, IsObject, IsString } from 'class-validator';
+import { IsDate, IsInt, IsNotEmpty, IsObject, IsString, isDate } from 'class-validator';
 import { CommentResponseDTO } from './comment.response.dto';
 export class ServiceResponseDTO {
   @IsNotEmpty()
@@ -31,4 +31,14 @@ export class ServiceResponseDTO {
   @IsObject()
   @ApiProperty()
   comments: CommentResponseDTO;
+
+  @IsNotEmpty()
+  @IsDate()
+  @ApiProperty()
+  created_at: Date;
+
+  @IsNotEmpty()
+  @IsDate()
+  @ApiProperty()
+  updated_at: Date;
 }

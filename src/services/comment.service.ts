@@ -1,30 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { ServiceResponseDTO } from '@/core/adapters/service.response.dto';
+import { CommentRequestDTO } from '../core/dtos';
+import { Service } from '@prisma/client';
 
 @Injectable()
 export class CommentService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prismaService: PrismaService) {}
 
-  async create(id: string, text: string): Promise<ServiceResponseDTO> {
-    return this.prisma.service.update({
-      where: { id },
-      data: {
-        comments: {
-          create: {
-            text,
-          },
+  async create(serviceId: string, commentRequestDTO: CommentRequestDTO): Promise<Service> {
+    const result = await this.prismaService.service.update({
+        where: {
+            id: serviceId
         },
-      },
-      include: {
-        comments: true,
-      },
-    });
+        data: {
+            comments: {
+                create: {
+                    text: commentRequestDTO.text
+                }
+            },
+            update_at: new Date()
+        },
+      })
+  
+      return result
   }
 
-  async getAllByService(serviceId: string): Promise<ServiceResponseDTO> {
-    return this.prisma.comment.findMany({
-      where: { serviceId: serviceId }
-    });
+  async getAllByService(serviceId: string): Promise<Service> {
+    const result = await this.prismaService.service.findFirst({
+        where: {
+            id: serviceId
+        },
+        include: {
+            comments: true
+        },
+    })
+  
+      return result
   }
 }

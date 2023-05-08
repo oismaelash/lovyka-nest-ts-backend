@@ -1,5 +1,5 @@
-import { HttpResponse } from '@/helpers/contracts';
+import { HttpResponse } from '../helpers/contracts';
 
 export interface UseCase<T = any> {
-  handle: (request: T) => Promise<HttpResponse>;
+  handle: (param: T, param2?: T) => Promise<HttpResponse>;
 }

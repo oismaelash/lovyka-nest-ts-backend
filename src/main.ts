@@ -32,7 +32,7 @@ async function bootstrap() {
     swaggerOptions: {
       persistAuthorization: true,
     },
-    customSiteTitle: 'API RCA',
+    customSiteTitle: 'API Services',
   };
 
   const document = SwaggerModule.createDocument(app, config);

@@ -1,34 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { ServiceResponseDTO } from '@/core/adapters/service.response.dto';
+import { Service } from '@prisma/client';
 
 @Injectable()
 export class LikeService {
-  constructor(private prisma: PrismaService) {}
+    constructor(private prismaService: PrismaService) { }
 
-  async addLike(id: string): Promise<ServiceResponseDTO> {
-    const service = await this.prisma.service.findUnique({
-      where: { id },
-    });
+    async addLike(id: string): Promise<Service> {
+        const service = await this.prismaService.service.findFirst({
+            where: { id }
+        });
 
-    return this.prisma.service.update({
-      where: { id },
-      data: {
-        likes: service.likes + 1,
-      },
-    });
-  }
+        return this.prismaService.service.update({
+            where: { id },
+            data: {
+                likes: service.likes + 1,
+                update_at: new Date()
+            },
+        });
+    }
 
-  async removeLike(id: string): Promise<ServiceResponseDTO> {
-    const service = await this.prisma.service.findUnique({
-      where: { id },
-    });
+    async dislike(id: string): Promise<Service> {
+        const service = await this.prismaService.service.findFirst({
+            where: { id }
+        });
 
-    return this.prisma.service.update({
-      where: { id },
-      data: {
-        dislikes: service.dislikes + 1,
-      },
-    });
-  }
+        return this.prismaService.service.update({
+            where: { id },
+            data: {
+                dislikes: service.dislikes + 1,
+                update_at: new Date()
+            },
+        });
+    }
 }

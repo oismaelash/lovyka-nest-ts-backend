@@ -3,19 +3,18 @@ import {
   HttpResponse,
   successResponse,
 } from '../../helpers/contracts';
-import { UseCase } from '@/helpers/useCase';
+import { UseCase } from '../../helpers/useCase';
 import { Injectable } from '@nestjs/common';
-import { ServiceAxios } from '../../services/service';
-import { ServiceRequestDTO } from '@/core/adapters/service.request.dto';
+import { ServiceService } from '../../services/service.service';
 
 @Injectable()
 export class GetAllServiceUseCase implements UseCase {
-  constructor(private readonly service: ServiceAxios) {}
+  constructor(private readonly service: ServiceService) {}
 
-  async handle(service: ServiceRequestDTO): Promise<HttpResponse> {
+  async handle(): Promise<HttpResponse> {
     try {
-      const result = await this.service.get(config);
-      return successResponse(result.data);
+      const result = await this.service.getAll()
+      return successResponse(result);
     } catch (error) {
       return errorResponse(error);
     }

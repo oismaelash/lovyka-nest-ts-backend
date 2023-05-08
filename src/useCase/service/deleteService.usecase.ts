@@ -3,19 +3,18 @@ import {
   HttpResponse,
   successResponse,
 } from '../../helpers/contracts';
-import { UseCase } from '@/helpers/useCase';
+import { UseCase } from '../../helpers/useCase';
+import { ServiceService } from '../../services/service.service';
 import { Injectable } from '@nestjs/common';
-import { ServiceAxios } from '../../services/service';
-import { ServiceRequestDTO } from '@/core/adapters/service.request.dto';
 
 @Injectable()
 export class DeleteServiceUseCase implements UseCase {
-  constructor(private readonly service: ServiceAxios) {}
+  constructor(private readonly serviceService: ServiceService) {}
 
-  async handle(service: ServiceRequestDTO): Promise<HttpResponse> {
+  async handle(serviceId: string): Promise<HttpResponse> {
     try {
-      const result = await this.service.get(config);
-      return successResponse(result.data);
+      const result = await this.serviceService.delete(serviceId);
+      return successResponse(result);
     } catch (error) {
       return errorResponse(error);
     }

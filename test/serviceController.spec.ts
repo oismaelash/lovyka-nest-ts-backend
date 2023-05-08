@@ -2,8 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
+import { ServiceRequestDTO } from '../src/core/dtos/service.request.dto';
 
-describe('PingController', () => {
+describe('ServiceController', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
@@ -18,11 +19,55 @@ describe('PingController', () => {
     await app.close();
   });
 
-  describe('Get ping status', () => {
-    it('should be get status of derby API', async () => {
-      const distributorId = 'RCATURISMO';
+  describe('operations of a service', () => {
+    it('should be create a service', async () => {
+
+      const payload: ServiceRequestDTO = {
+        description: 'mock',
+        name: 'mock',
+        price: 99
+      }
+
       return await request(app.getHttpServer())
-        .get(`/ping?distributorId=${distributorId}`)
+        .post(`/service`)
+        .send(payload)
+        .expect(200);
+    }, 10000);
+
+    it('should be get all services without comments', async () => {
+      return await request(app.getHttpServer())
+        .get(`/service/all`)
+        .field('comments', [])
+        .expect(200);
+    }, 10000);
+
+    it('should be get one service with all comments', async () => {
+      return await request(app.getHttpServer())
+        .get(`/service/one`)
+        .expect(200);
+    }, 10000);
+
+    it('should be update a service', async () => {
+
+      const payload: ServiceRequestDTO = {
+        description: 'mock-update',
+        name: 'mock',
+        price: 99
+      }
+
+      const serviceId = 'clhe8sd0i0000us78lz4jhdor'
+
+      return await request(app.getHttpServer())
+        .put(`/service?id=${serviceId}`)
+        .send(payload)
+        .expect(200);
+    }, 10000);
+
+    it('should be delete a service', async () => {
+      const serviceId = 'clhe8sd0i0000us78lz4jhdor'
+
+      return await request(app.getHttpServer())
+        .delete(`/service?id=${serviceId}`)
         .expect(200);
     }, 10000);
   });

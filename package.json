@@ -1,5 +1,5 @@
 {
-  "name": "API of services",
+  "name": "API-services",
   "version": "0.0.1",
   "description": "Api created with Nest using Typescript with MongoDB using Prisma ORM",
   "author": "Ismael Ash",
