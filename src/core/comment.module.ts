@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
-import { PrismaModule } from '../../prisma/prisma.module';
+import { PrismaService } from '../prisma/prisma.service';
+import { PrismaModule } from '../prisma/prisma.module';
 import { CommentController } from './controllers/comment.controller';
 import { CommentService } from '../services/comment.service';
 import { CreateCommentUseCase } from '../useCase/comment/createComment.usecase';

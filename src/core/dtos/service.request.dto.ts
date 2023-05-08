@@ -15,4 +15,9 @@ export class ServiceRequestDTO {
   @IsInt()
   @ApiProperty()
   price: number;
+
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  author: string;
 }

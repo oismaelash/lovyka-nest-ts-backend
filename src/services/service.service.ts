@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { ServiceRequestDTO } from '../core/dtos/service.request.dto';
 import { Service } from '@prisma/client';
 
@@ -14,7 +14,8 @@ export class ServiceService {
       data: {
         name: serviceRequestDTO.name,
         description: serviceRequestDTO.description,
-        price: serviceRequestDTO.price
+        price: serviceRequestDTO.price,
+        author: serviceRequestDTO.author
       }
     })
 
@@ -22,7 +23,11 @@ export class ServiceService {
   }
 
   async getAll(): Promise<Service[]> {
-    return this.prismaService.service.findMany()
+    return this.prismaService.service.findMany({
+      orderBy: {
+        update_at: 'desc'
+      }
+    })
   }
 
   async getOne(id: string): Promise<Service> {
@@ -43,10 +48,7 @@ export class ServiceService {
     return this.prismaService.service.update({
       where: { id },
       data: {
-        name: serviceRequestDTO.name,
-        description: serviceRequestDTO.description,
-        price: serviceRequestDTO.price,
-        update_at: new Date()
+        ...serviceRequestDTO
       }
     });
   }
