@@ -1,3 +1,9 @@
+# About project
+https://www.youtube.com/watch?v=p9JC8Wa0ids
+
+# Frontend project
+https://github.com/oismaelash/lovyka-next-ts-frontend
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
