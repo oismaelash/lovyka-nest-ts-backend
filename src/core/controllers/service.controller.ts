@@ -13,8 +13,8 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ServiceResponseDTO } from '../dtos/service.response.dto';
 import { CreateServiceUseCase } from '../../useCase/service/createService.usecase';
 import { ServiceRequestDTO } from '../dtos/service.request.dto';
-import { GetAllServiceUseCase } from '../../useCase/service/GetAllService.usecase';
-import { GetOneServiceUseCase } from '../../useCase/service/GetOneService.usecase';
+import { GetAllServiceUseCase } from '../../useCase/service/getAllService.usecase';
+import { GetOneServiceUseCase } from '../../useCase/service/getOneService.usecase';
 import { UpdateServiceUseCase } from '../../useCase/service/updateService.usecase';
 import { DeleteServiceUseCase } from '../../useCase/service/deleteService.usecase';
 
